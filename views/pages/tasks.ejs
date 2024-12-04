@@ -1,0 +1,64 @@
+<%- include('../partials/header') %>
+
+<h1 class="mb-4">Your To-Do List</h1>
+
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="POST" action="/tasks">
+            <div class="mb-3">
+                <label for="title" class="form-label">Task Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="dueDate" class="form-label">Due Date</label>
+                <input type="date" class="form-control" id="dueDate" name="dueDate">
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-select" id="status" name="status">
+                    <option value="OPEN">OPEN</option>
+                    <option value="WORKING">WORKING</option>
+                    <option value="PENDING REVIEW">PENDING REVIEW</option>
+                    <option value="COMPLETED">COMPLETED</option>
+                    <option value="OVERDUE">OVERDUE</option>
+                    <option value="CANCELLED">CANCELLED</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Add Task</button>
+        </form>
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Your Tasks</h5>
+        <% if (tasks.length > 0) { %>
+            <ul class="list-group">
+                <% tasks.forEach(task => { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong><%= task.title %></strong>
+                            <p><%= task.description %></p>
+                            <small>Due: <%= task.dueDate || 'No due date' %></small>
+                        </div>
+                        <div>
+                            <form method="POST" action="/tasks/<%= task.id %>?_method=DELETE" class="d-inline">
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p class="text-muted">No tasks available. Add a task above!</p>
+        <% } %>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
